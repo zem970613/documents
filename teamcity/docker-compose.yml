@@ -1,0 +1,45 @@
+version: '3'
+services:
+  teamcity-server:
+    restart: always
+    image: 'jetbrains/teamcity-server'
+    hostname: 'teamcity-server'
+    container_name: teamcity-server
+    ports:
+      - '8888:8111'
+    volumes:
+      - '~/dockerData/teamcity-data:/data/teamcity_server/datadir'
+      - '~/dockerData/teamcity-logs:/opt/teamcity/logs'
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    environment:
+      TEAMCITY_SERVER_MEM_OPTS: "-Xmx2g -XX:MaxPermSize=270m -XX:ReservedCodeCacheSize=350m"
+
+  teamcity-agent-1:
+    restart: always
+    image: 'jetbrains/teamcity-agent'
+    container_name: teamcity-agent-1
+    volumes:
+      - '~/dockerData/teamcity-agent1-conf:/data/teamcity_agent/conf'
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    environment:
+      SERVER_URL: "http://192.168.2.66:8888"
+
+  teamcity-agent-2:
+    restart: always
+    image: 'jetbrains/teamcity-agent'
+    container_name: teamcity-agent-2
+    volumes:
+      - '~/dockerData/teamcity-agent2-conf:/data/teamcity_agent/conf'
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    environment:
+      SERVER_URL: "http://192.168.2.66:8888"
+
+  teamcity-agent-3:
+    restart: always
+    image: 'jetbrains/teamcity-agent'
+    container_name: teamcity-agent-3
+    volumes:
+      - '~/dockerData/teamcity-agent3-conf:/data/teamcity_agent/conf'
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    environment:
+      SERVER_URL: "http://192.168.2.66:8888"

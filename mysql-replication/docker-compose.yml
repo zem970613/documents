@@ -1,0 +1,31 @@
+version: '2'
+services:
+ mysql-master:
+   restart: always
+   build: master/
+   image: evan1120/mysql-master
+   volumes:
+   - /data/dockerData/mysql-master/data:/var/lib/mysql
+   - /etc/localtime:/etc/localtime
+   command: [--character-set-server=utf8mb4,--collation-server=utf8mb4_unicode_ci]
+   environment:
+    MYSQL_ROOT_PASSWORD: 123456
+   ports:
+   - 3307:3306
+   container_name: mysql-master
+   mem_limit: 8g
+
+ mysql-slave:
+   restart: always
+   build: slave/
+   image: evan1120/mysql-slave
+   volumes:
+   - /data/dockerData/mysql-slave/data:/var/lib/mysql
+   - /etc/localtime:/etc/localtime
+   command: [--character-set-server=utf8mb4,--collation-server=utf8mb4_unicode_ci]
+   environment:
+    MYSQL_ROOT_PASSWORD: 123456
+   ports:
+   - 3308:3306
+   container_name: mysql-slave
+   mem_limit: 8g
